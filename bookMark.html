@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Applied Jobs</title>
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="common.css" />
+    
+  </head>
+  <body>
+    <div class="container">
+      <div class="nav">
+        <a href="index.html" class="options">Home</a>
+        <a href="appliedJobs.html" class="options">Applied Jobs</a>
+        <a href="bookMark.html" class="options">Book Marks</a>
+      </div>
+      <table class="table">
+        <thead> 
+        <tr class="tr">
+          <th class="th">Name</th>
+          <th class="th">Email</th>
+          <th class="th">Applied Job</th>
+          <th class="th">Expected Salary</th> 
+        </tr>
+    </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </body>
+  <script> 
+    let data = JSON.parse(localStorage.getItem("bookMarkData")) ;
+   
+      data.forEach((element,i) => {
+        let tr = document.createElement("tr");
+         tr.classList.add('tr')
+        let td1 = document.createElement("td");
+        td1.innerText = element.personName;
+        td1.classList.add('td')
+        let td2 = document.createElement("td");
+        td2.innerText = element.personEmail;
+        td2.classList.add('td')
+        let td3 = document.createElement("td");
+        td3.innerText = element.personRole;
+        td3.classList.add('td')
+        let td4 = document.createElement("td");
+        td4.innerText = 'Delete';
+        td4.classList.add('td')
+        td4.style.backgroundColor='red' ;
+        td4.style.cursor='pointer'
+        td4.addEventListener('click',()=>handleDelete(i))
+        
+        tr.append(td1,td2,td3,td4)
+        document.querySelector('tbody').append(tr)
+      });
+    function handleDelete(i){
+       data.splice(i,1)
+       localStorage.setItem('bookMarkData',JSON.stringify(data));
+       window.location.reload();
+    }
+
+   
+  </script>
+</html>

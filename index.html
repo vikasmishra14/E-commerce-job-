@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="index.html" class="options">Home</a>
+            <a href="appliedJobs.html" class="options">Applied Jobs</a>
+            <a href="bookMark.html" class="options">Book Marks</a>
+        </div>
+
+        <div class="details">
+            <form action="" class="form">
+                <input type="text" placeholder="Name" id="name" class="inputs">
+                <input type="text" placeholder="Email" id="email" class="inputs">
+                <select name="Job Role" id="role" class="inputs">
+                    <option value="FSD">FSD</option>
+                    <option value="Frontend">Frontend</option>
+                    <option value="Backed">Backend</option>
+                </select>
+                 <input class="inputs" type="number" placeholder="Expected Salary" id="salary">
+                 <input class="inputs" type="submit"  name="submit" value="submit" id="submit">
+            </form>
+        </div>
+    </div>
+</body>
+<script>
+let userData = JSON.parse(localStorage.getItem('jobData')) || [];
+
+    const handleSubmit = ()=>{
+        event.preventDefault();
+        let userObj={
+            personName:document.querySelector('#name').value,
+            personEmail:document.querySelector('#email').value,
+            personRole:document.querySelector('#role').value,
+            personExpectedSalary:document.querySelector('#salary').value
+        }
+           userData.push(userObj);
+         const data=  localStorage.setItem('jobData', JSON.stringify(userData));
+        
+    }
+    document.querySelector('form').addEventListener('submit',handleSubmit);
+</script>
+</html>

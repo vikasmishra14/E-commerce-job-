@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Applied Jobs</title>
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="common.css" />
+    <style>
+      tbody > tr > td:last-child {
+        background-color: red;
+        color: white;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="nav">
+        <a href="index.html" class="options">Home</a>
+        <a href="appliedJobs.html" class="options">Applied Jobs</a>
+        <a href="bookMark.html" class="options">Book Marks</a>
+      </div>
+      <select id="sortByname" onChange='handleChange()'>
+        <option value="">Sort by name</option>
+        <option value="Ascending">Ascending</option>
+        <option value="Decending">Decending</option>
+      </select>
+      <select id="sortBySalary">
+        <option value="">Sort By Salary</option>
+        <option value="Ascending">Ascending</option>
+        <option value="Decending">Decending</option>
+      </select>
+      <table class="table">
+        <thead class="theadd">
+          <tr class="tr">
+            <th class="th">Name</th>
+            <th class="th em">Email</th>
+            <th class="th">Job Role</th>
+            <th class="th">Expected Salary</th>
+            <th class="th">Add to Book mark</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </body>
+  <script>
+    let bookMarkArr=JSON.parse(localStorage.getItem('bookMarkData')) || [];
+    let data = JSON.parse(localStorage.getItem("jobData")) ;
+
+    document.querySelector('#sortBySalary').addEventListener('change', handleSortBySalary)
+    function handleSortBySalary(){
+      let selected=document.querySelector('#sortBySalary').value; 
+      if(selected=='Ascending'){
+        data.sort(function(a,b){
+         return a.personExpectedSalary-b.personExpectedSalary;
+        })
+        displayUi(data)
+      }
+      if(selected=='Decending'){
+        data.sort(function(a,b){ 
+          return b.personExpectedSalary-a.personExpectedSalary;
+      })
+      displayUi(data)
+    }
+  }
+
+     function handleChange(){
+      let selected=document.querySelector('#sortByname').value;
+      // console.log('sorted',selected)
+      if(selected=='Ascending'){
+        data.sort(function(a,b){
+          if(a.personName>b.personName)return 1
+          if(a.personName<b.personName) return -1
+          return 0 
+        })
+        displayUi(data)
+      }
+      if(selected=='Decending'){
+        data.sort(function(a,b){
+          if(a.personName>b.personName)return -1
+          if(a.personName<b.personName) return 1
+          return 0 
+      })
+      displayUi(data)
+     }
+    }
+
+    displayUi(data);
+    function displayUi (data){
+      document.querySelector('tbody').innerHTML=''
+      data.forEach((element,i) => {
+        let tr = document.createElement("tr");
+         tr.classList.add('tr')
+        let td1 = document.createElement("td");
+        td1.innerText = element.personName;
+        td1.classList.add('td')
+        let td2 = document.createElement("td");
+        td2.innerText = element.personEmail;
+        td2.classList.add('td')
+        let td3 = document.createElement("td");
+        td3.innerText = element.personRole;
+        td3.classList.add('td')
+        let td4 = document.createElement("td");
+        td4.innerText = element.personExpectedSalary;
+        td4.classList.add('td')
+        let td5 = document.createElement("td");
+        td5.innerText = "BookMark";
+        td5.classList.add('td')
+        td5.addEventListener('click',()=>bookMark(element,i))
+        // console.log(data)
+        tr.append(td1,td2,td3,td4,td5)
+        document.querySelector('tbody').append(tr)
+      });
+    };
+
+    function bookMark(el,i){
+      bookMarkArr.push(el);
+      // console.log(el)
+      data.splice(i,1);
+      localStorage.setItem('jobData',JSON.stringify(data))
+      displayUi(data)
+      localStorage.setItem('bookMarkData',JSON.stringify(bookMarkArr))
+    }
+  </script>
+</html>
